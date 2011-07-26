@@ -1,0 +1,5 @@
+Revision history for Sub::Spec::GetArgs::GetPost
+
+0.01     2011-07-26
+
+         First release, extracted from Sub::Spec::HTTP::Server.

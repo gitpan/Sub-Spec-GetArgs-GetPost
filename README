@@ -1,0 +1,99 @@
+NAME
+    Sub::Spec::GetArgs::GetPost - Get subroutine arguments from HTTP
+    GET/POST request
+
+VERSION
+    version 0.01
+
+SYNOPSIS
+     use Sub::Spec::GetArgs::GetPost;
+
+     my $res = get_args_from_getpost(psgi_env=>$env, spec=>$spec, ...);
+
+DESCRIPTION
+    This module provides get_args_from_getpost(), which parses HTTP GET/POST
+    request data into subroutine arguments (%args).
+
+    This module uses Log::Any for logging framework.
+
+    This module's functions has Sub::Spec specs.
+
+FUNCTIONS
+    None are exported by default, but they are exportable.
+
+  get_args_from_getpost(%args) -> [STATUS_CODE, ERR_MSG, RESULT]
+    Get subroutine arguments (%args) from HTTP GET/POST request data.
+
+    Using information in sub spec's ~args~ clause, parse HTTP GET/POST
+    request data into hash ~%args~, suitable for passing into subs.
+
+    Request data is retrieved from PSGI environment ($env).
+
+    Arguments can be put in query string (GET) or www-form (POST), e.g.
+    http://127.0.0.1:5000/Module/sub?arg1=val&arg2=val, or can also be
+    encoded as YAML/JSON/PHP and be put into request body with appropriate
+    Content-Type header (i.e. ~text/yaml~ when sending in YAML,
+    ~application/json~ for JSON, and ~application/vnd.php.serialized~ for
+    PHP serialization.
+
+    Returns a 3-element arrayref. STATUS_CODE is 200 on success, or an error
+    code between 3xx-5xx (just like in HTTP). ERR_MSG is a string containing
+    error message, RESULT is the actual result.
+
+    Arguments ("*" denotes required arguments):
+
+    *   accept_json => *bool* (default 1)
+
+        Whether to accept JSON as encoding format.
+
+    *   accept_php => *bool* (default 1)
+
+        Whether to accept PHP serialization format as encoding.
+
+    *   accept_yaml => *bool* (default 1)
+
+        Whether to accept YAML as encoding format.
+
+        Currently Perl module YAML::Syck is used to encode/decode YAML.
+
+    *   allow_unknown_params => *bool* (default 0)
+
+        Whether to allow unknown parameters (that is, params not mentioned
+        in args schema).
+
+    *   exclude_params => *str*
+
+        A regex to exclude parameters from checking.
+
+    *   per_var_encoding => *bool* (default 1)
+
+        Whether to enable per-var encoding.
+
+        If set to 1, each request variable can be appended by a ":F"
+        notation to indicate the encoding format that the variable is in,
+        for example (in URL):
+
+        : http://127.0.0.1:5000/Module/sub?array_arg:j=%5B1%2C2%2C3%5D
+
+        After JSON decoding (:j indicates json), ~array_arg~ will contain an
+        array ~[1, 2, 3]~.
+
+    *   psgi_env => *hash*
+
+    *   spec* => *hash*
+
+FAQ
+SEE ALSO
+    Sub::Spec
+
+    Sub::Spec::HTTP::Server
+
+AUTHOR
+    Steven Haryanto <stevenharyanto@gmail.com>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2011 by Steven Haryanto.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
