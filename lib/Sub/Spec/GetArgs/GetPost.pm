@@ -15,7 +15,7 @@ use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw(get_args_from_getpost);
 
-our $VERSION = '0.01'; # VERSION
+our $VERSION = '0.02'; # VERSION
 
 our %SPEC;
 
@@ -34,7 +34,8 @@ $SPEC{get_args_from_getpost} = {
 Using information in sub spec's ~args~ clause, parse HTTP GET/POST request data
 into hash ~%args~, suitable for passing into subs.
 
-Request data is retrieved from PSGI environment ($env).
+Request data is retrieved either from PSGI environment (~psgi_env~) or
+Plack::Request object (~req~). Exactly one of them must be specified.
 
 Arguments can be put in query string (GET) or www-form (POST), e.g.
 http://127.0.0.1:5000/Module/sub?arg1=val&arg2=val, or can also be encoded as
@@ -45,6 +46,8 @@ YAML/JSON/PHP and be put into request body with appropriate Content-Type header
 _
     args => {
         psgi_env => ['hash' => {
+        }],
+        req => ['any' => { #'obj' => {
         }],
         spec => ['hash*' => {
         }],
@@ -99,11 +102,12 @@ sub get_args_from_getpost {
     my $accept_php  = $args{accept_php}  // 1;
     my $accept_yaml = $args{accept_yaml} // 1;
     my $allow_unknown_params = $args{allow_unknown_params} // 0;
-    my $spec = $args{spec};
+    my $spec        = $args{spec};
     return [400, "Please specify spec"] unless $spec;
-    my $args_spec = $spec->{args} // {};
-    my $psgi_env = $args{psgi_env};
-    return [400, "Please specify psgi_env"] unless $psgi_env;
+    my $args_spec   = $spec->{args} // {};
+    my $psgi_env    = $args{psgi_env};
+    my $req         = $args{req};
+    return [400, "Please specify psgi_env OR req"] unless $psgi_env xor $req;
     my $exclude_params = $args{exclude_params};
     if (defined $exclude_params) {
         unless (ref($exclude_params) ne 'Regexp') {
@@ -113,8 +117,13 @@ sub get_args_from_getpost {
         }
     }
 
-    my $ct = $psgi_env->{CONTENT_TYPE} // '';
-    my $req = Plack::Request->new($psgi_env);
+    my $ct;
+    if ($psgi_env) {
+        $ct  = $psgi_env->{CONTENT_TYPE} // '';
+        $req = Plack::Request->new($psgi_env);
+    } else {
+        $ct  = $req->content_type;
+    }
 
     my $args;
     if ($ct eq 'application/vnd.php.serialized') {
@@ -197,7 +206,7 @@ Sub::Spec::GetArgs::GetPost - Get subroutine arguments from HTTP GET/POST reques
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 SYNOPSIS
 
@@ -226,7 +235,8 @@ Get subroutine arguments (%args) from HTTP GET/POST request data.
 Using information in sub spec's ~args~ clause, parse HTTP GET/POST request data
 into hash ~%args~, suitable for passing into subs.
 
-Request data is retrieved from PSGI environment ($env).
+Request data is retrieved either from PSGI environment (~psgi_env~) or
+Plack::Request object (~req~). Exactly one of them must be specified.
 
 Arguments can be put in query string (GET) or www-form (POST), e.g.
 http://127.0.0.1:5000/Module/sub?arg1=val&arg2=val, or can also be encoded as
@@ -277,6 +287,8 @@ After JSON decoding (:j indicates json), ~array_arg~ will contain an array ~[1,
 2, 3]~.
 
 =item * B<psgi_env> => I<hash>
+
+=item * B<req> => I<>
 
 =item * B<spec>* => I<hash>
 

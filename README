@@ -3,7 +3,7 @@ NAME
     GET/POST request
 
 VERSION
-    version 0.01
+    version 0.02
 
 SYNOPSIS
      use Sub::Spec::GetArgs::GetPost;
@@ -27,7 +27,8 @@ FUNCTIONS
     Using information in sub spec's ~args~ clause, parse HTTP GET/POST
     request data into hash ~%args~, suitable for passing into subs.
 
-    Request data is retrieved from PSGI environment ($env).
+    Request data is retrieved either from PSGI environment (~psgi_env~) or
+    Plack::Request object (~req~). Exactly one of them must be specified.
 
     Arguments can be put in query string (GET) or www-form (POST), e.g.
     http://127.0.0.1:5000/Module/sub?arg1=val&arg2=val, or can also be
@@ -79,6 +80,8 @@ FUNCTIONS
         array ~[1, 2, 3]~.
 
     *   psgi_env => *hash*
+
+    *   req => **
 
     *   spec* => *hash*
 
