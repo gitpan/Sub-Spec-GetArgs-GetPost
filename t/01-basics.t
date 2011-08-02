@@ -10,7 +10,7 @@ use Test::More 0.96;
 use HTTP::Request::Common;
 use Plack::Test;
 use Sub::Spec::GetArgs::GetPost qw(get_args_from_getpost);
-use YAML;
+use YAML::Syck;
 
 my $spec = {
     args => {

@@ -3,7 +3,7 @@ NAME
     GET/POST request
 
 VERSION
-    version 0.02
+    version 0.03
 
 SYNOPSIS
      use Sub::Spec::GetArgs::GetPost;
