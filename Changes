@@ -1,5 +1,11 @@
 Revision history for Sub::Spec::GetArgs::GetPost
 
+0.04     2011-08-31
+
+         No functional changes. Updated because _parse_schema() is moved from
+         Sub::Spec::Utils to Data::Sah::Util.
+
+
 0.03     2011-08-02
 
          No functional changes. Fixed test script which uses 'YAML' intead of

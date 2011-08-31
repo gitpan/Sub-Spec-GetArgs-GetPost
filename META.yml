@@ -14,6 +14,7 @@ meta-spec:
   version: 1.4
 name: Sub-Spec-GetArgs-GetPost
 requires:
+  Data::Sah::Util: 0
   HTTP::Message: 0
   JSON: 0
   Log::Any: 0
@@ -26,4 +27,4 @@ requires:
 resources:
   homepage: http://search.cpan.org/dist/Sub-Spec-GetArgs-GetPost/
   repository: http://github.com/sharyanto/perl-Sub-Spec-GetArgs-GetPost
-version: 0.03
+version: 0.04

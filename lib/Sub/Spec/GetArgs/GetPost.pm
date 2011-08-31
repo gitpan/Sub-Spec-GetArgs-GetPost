@@ -5,24 +5,24 @@ use strict;
 use warnings;
 use Log::Any '$log';
 
+use Data::Sah::Util;
 use JSON;
 use PHP::Serialization;
 use Plack::Request;
-use Sub::Spec::Utils; # temp, for _parse_schema
 use YAML::Syck;
 
 use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT_OK = qw(get_args_from_getpost);
 
-our $VERSION = '0.03'; # VERSION
+our $VERSION = '0.04'; # VERSION
 
 our %SPEC;
 
 my $json = JSON->new->allow_nonref;
 
 sub _parse_schema {
-    Sub::Spec::Utils::_parse_schema(@_);
+    Data::Sah::Util::_parse_schema(@_);
 }
 
 $SPEC{get_args_from_getpost} = {
@@ -206,7 +206,7 @@ Sub::Spec::GetArgs::GetPost - Get subroutine arguments from HTTP GET/POST reques
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 
