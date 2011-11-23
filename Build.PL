@@ -17,13 +17,13 @@ my %module_build_args = (
     'Steven Haryanto <stevenharyanto@gmail.com>'
   ],
   'dist_name' => 'Sub-Spec-GetArgs-GetPost',
-  'dist_version' => '0.04',
+  'dist_version' => '0.05',
   'license' => 'perl',
   'module_name' => 'Sub::Spec::GetArgs::GetPost',
   'recommends' => {},
   'recursive_test_files' => 1,
   'requires' => {
-    'Data::Sah::Util' => '0',
+    'Data::Sah' => '0',
     'HTTP::Message' => '0',
     'JSON' => '0',
     'Log::Any' => '0',

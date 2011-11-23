@@ -1,5 +1,10 @@
 Revision history for Sub::Spec::GetArgs::GetPost
 
+0.05     2011-11-23
+
+         No functional changes. Replace Data::Sah::Util with Data::Sah.
+
+
 0.04     2011-08-31
 
          No functional changes. Updated because _parse_schema() is moved from
