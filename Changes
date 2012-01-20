@@ -1,5 +1,10 @@
 Revision history for Sub::Spec::GetArgs::GetPost
 
+0.06     2012-01-20
+
+         No functional changes. Mark deprecation.
+
+
 0.05     2011-11-23
 
          No functional changes. Replace Data::Sah::Util with Data::Sah.
